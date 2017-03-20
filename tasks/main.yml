@@ -1,10 +1,21 @@
 ---
+- name: Create home dir
+  file:
+    path: "{{ ssh_user_home }}/.ssh"
+    owner: "{{ ssh_user }}"
+    state: directory
+    mode: u=rwx,g=rx,o=
+
 - name: configure ~/.ssh/id_rsa
   template:
+    owner: "{{ ssh_user }}"
     src: id_rsa.j2
-    dest: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"
+    dest: "{{ ssh_user_home }}/.ssh/id_rsa"
+    mode: u=rwx,g=,o=
 
 - name: configure ~/.ssh/id_rsa.pub
   template:
+    owner: "{{ ssh_user }}"
     src: id_rsa.pub.j2
-    dest: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa.pub"
+    dest: "{{ ssh_user_home }}/.ssh/id_rsa.pub"
+    mode: u=rwx,g=rx,o=
